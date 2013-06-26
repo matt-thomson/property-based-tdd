@@ -20,6 +20,8 @@ class Quantity:
 		if (parsedUnit[0] == otherParsedUnit[0]):
 			if (parsedUnit[1] + otherParsedUnit[1] == 1):
 				newUnit = parsedUnit[0]
+			elif (parsedUnit[1] + otherParsedUnit[1] == 0):
+				newUnit = ""
 			else:
 				newUnit = "%s^%s" % (parsedUnit[0], parsedUnit[1] + otherParsedUnit[1])
 		else:	

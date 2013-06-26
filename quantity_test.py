@@ -86,14 +86,26 @@ class QuantityTests(unittest.TestCase):
 		assert_that(result.unit, equal_to("%s^%s" % (unit, firstPower+secondPower)))
 		assert_that(result.value, equal_to(firstValue * secondValue))
 
-	@forall(firstValue = values(), secondValue = values(), unit = units(), firstPower = powers(), secondPower = powers(),
-		where = lambda firstPower, secondPower : firstPower + secondPower == 1)
-	def test_multiplying_same_unit_different_powers_totalling_1(self, firstValue, secondValue, unit, firstPower, secondPower):
+	@forall(firstValue = values(), secondValue = values(), unit = units(), firstPower = powers())
+	def test_multiplying_same_unit_different_powers_totalling_1(self, firstValue, secondValue, unit, firstPower):
+		secondPower = 1 - firstPower
+
 		quantity_a = Quantity(firstValue, "%s^%s" % (unit, firstPower))
 		quantity_b = Quantity(secondValue, "%s^%s" % (unit, secondPower))
 
 		result = quantity_a.multiply(quantity_b)
 		assert_that(result.unit, equal_to(unit))
+		assert_that(result.value, equal_to(firstValue * secondValue))
+
+	@forall(firstValue = values(), secondValue = values(), unit = units(), firstPower = powers())
+	def test_multiplying_same_unit_different_powers_totalling_0(self, firstValue, secondValue, unit, firstPower):
+		secondPower = - firstPower
+
+		quantity_a = Quantity(firstValue, "%s^%s" % (unit, firstPower))
+		quantity_b = Quantity(secondValue, "%s^%s" % (unit, secondPower))
+
+		result = quantity_a.multiply(quantity_b)
+		assert_that(result.unit, equal_to(""))
 		assert_that(result.value, equal_to(firstValue * secondValue))
 
 if __name__ == "__main__":
