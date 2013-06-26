@@ -2,20 +2,20 @@ import re
 
 UNIT_WITH_POWER = re.compile("(.+)\^(-?\d+)")
 
-class TypedValue:
+class Quantity:
 	def __init__(self,value,unit):
 		self.value = value
 		self.unit = unit
 
-	def add(self, otherTypedValue):
-		if (self.unit != otherTypedValue.unit):
+	def add(self, otherQuantity):
+		if (self.unit != otherQuantity.unit):
 			raise ValueError("Can't add typed values with mismatching units")
 
-		return TypedValue(self.value + otherTypedValue.value, self.unit)
+		return Quantity(self.value + otherQuantity.value, self.unit)
 
-	def multiply(self, otherTypedValue):
+	def multiply(self, otherQuantity):
 		parsedUnit = self.getParsedUnit()
-		otherParsedUnit = otherTypedValue.getParsedUnit()
+		otherParsedUnit = otherQuantity.getParsedUnit()
 
 		if (parsedUnit[0] == otherParsedUnit[0]):
 			if (parsedUnit[1] + otherParsedUnit[1] == 1):
@@ -23,14 +23,14 @@ class TypedValue:
 			else:
 				newUnit = "%s^%s" % (parsedUnit[0], parsedUnit[1] + otherParsedUnit[1])
 		else:	
-			newUnit = self.unit + otherTypedValue.unit
+			newUnit = self.unit + otherQuantity.unit
 
-		return TypedValue(self.value * otherTypedValue.value, newUnit)
+		return Quantity(self.value * otherQuantity.value, newUnit)
 
-	def divide(self, otherTypedValue):
-		newUnit = self.unit + "/" + otherTypedValue.unit
+	def divide(self, otherQuantity):
+		newUnit = self.unit + "/" + otherQuantity.unit
 
-		return TypedValue(self.value / otherTypedValue.value, newUnit)
+		return Quantity(self.value / otherQuantity.value, newUnit)
 
 	def getParsedUnit(self):
 		unitWithPowerMatch = UNIT_WITH_POWER.match(self.unit)
