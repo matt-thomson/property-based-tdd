@@ -1,6 +1,5 @@
 from factcheck import *
 from hamcrest import *
-import unittest
 from quantity import *
 
 def values():
