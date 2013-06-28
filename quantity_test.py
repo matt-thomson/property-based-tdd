@@ -100,7 +100,7 @@ def test_multiplying_same_unit_different_powers_totalling_1(firstValue, secondVa
 def test_multiplying_same_unit_different_powers_totalling_0(firstValue, secondValue, unit, firstPower):
 	secondPower = - firstPower
 
-	quantity_a = Quantity(firstValue, "%s^%s1" % (unit, firstPower))
+	quantity_a = Quantity(firstValue, "%s^%s" % (unit, firstPower))
 	quantity_b = Quantity(secondValue, "%s^%s" % (unit, secondPower))
 
 	result = quantity_a.multiply(quantity_b)
